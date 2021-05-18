@@ -83,3 +83,13 @@ functions:
       - http:
           path: notes/{id}
           method: delete
+
+  add_field:
+    # Defines an HTTP API endpoint that calls the main function in list.js
+    # - path: url path is /notes
+    # - method: GET request
+    handler: add_field.main
+    events:
+      - http:
+          path: notes
+          method: get

@@ -1,5 +1,5 @@
 {
-  "body": "{\"content\":\"new world\",\"attachment\":\"new.jpg\"}",
+  "body": "{\"content\":\"new world\",\"attachment\":\"new.jpg\",\"newfield\":\"something new\"}",
   "pathParameters": {
     "id": "9fc1aa00-b817-11eb-a367-e5fab5eaf092"
   }
