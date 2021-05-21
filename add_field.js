@@ -13,6 +13,13 @@ export const main = handler(async (event, context) => {
     // ExpressionAttributeValues: {
     //   ":userId": "123",
     // },
+    FilterExpression: "#field = :value",
+    ExpressionAttributeNames: {
+      "#field" : event.body.filter.fieldName
+    },
+    ExpressionAttributeValues: {
+      ":value": event.body.filter.fieldValue
+    }
   };
 
   const { fieldName, fieldValue } = event.body.fieldParameters;

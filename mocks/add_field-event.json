@@ -1,8 +1,12 @@
 {
   "body" : {
     "fieldParameters" : {
-      "fieldName" : "shareValues",
-      "fieldValue" : "false"
+      "fieldName" : "anotherField",
+      "fieldValue" : "anotherFieldValue"
+    },
+    "filter" : {
+      "fieldName" : "attachment",
+      "fieldValue" : "hello.jpg" 
     }
   }
 }
