@@ -2,6 +2,8 @@ import handler from "./libs/handler-lib";
 import dynamoDb from "./libs/dynamodb-lib";
 
 export const main = handler(async (event, context) => {
+  const { fieldName, fieldValue } = event.body.fieldParameters;
+
   const params = {
     TableName: process.env.tableName,
     // 'KeyConditionExpression' defines the condition for the query
@@ -13,16 +15,18 @@ export const main = handler(async (event, context) => {
     // ExpressionAttributeValues: {
     //   ":userId": "123",
     // },
-    FilterExpression: "#field = :value",
+    FilterExpression: "#field = :value AND NOT (#newfield = :trueval) AND NOT (#newfield = :falseval)",
     ExpressionAttributeNames: {
-      "#field" : event.body.filter.fieldName
+      "#field" : event.body.filter.fieldName,
+      "#newfield" : fieldName
     },
     ExpressionAttributeValues: {
-      ":value": event.body.filter.fieldValue
+      ":value": event.body.filter.fieldValue,
+      ":trueval" : true,
+      ":falseval" : false
     }
   };
 
-  const { fieldName, fieldValue } = event.body.fieldParameters;
   const result = await dynamoDb.scan(params);
 
   let updated = 0;
@@ -41,7 +45,7 @@ export const main = handler(async (event, context) => {
         // 'ExpressionAttributeValues' defines the value in the update expression
         UpdateExpression: `SET ${fieldName} = :newfieldvalue`,
         ExpressionAttributeValues: {
-          ":newfieldvalue": fieldValue || null,
+          ":newfieldvalue": fieldValue,
         },
         // 'ReturnValues' specifies if and how to return the item's attributes,
         // where ALL_NEW returns all attributes of the item after the update; you

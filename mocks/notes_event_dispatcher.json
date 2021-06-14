@@ -1,0 +1,62 @@
+{
+    "Records": [
+        {
+            "eventID": "f04c069917c2a78a768050a4b706a9bf",
+            "eventName": "MODIFY",
+            "eventVersion": "1.1",
+            "eventSource": "aws:dynamodb",
+            "awsRegion": "eu-west-1",
+            "dynamodb": {
+                "ApproximateCreationDateTime": 1623422116,
+                "Keys": {
+                    "noteId": {
+                        "S": "123123"
+                    },
+                    "userId": {
+                        "S": "notifications"
+                    }
+                },
+                "NewImage": {
+                    "comments": {
+                        "L": [
+                            {
+                                "M": {
+                                    "commentedBy": {
+                                        "S": "Some Name"
+                                    },
+                                    "value": {
+                                        "S": "some"
+                                    },
+                                    "parentId": {
+                                        "S": "234234"
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    "noteId": {
+                        "S": "123123"
+                    },
+                    "userId": {
+                        "S": "notifications"
+                    }
+                },
+                "OldImage": {
+                    "comments": {
+                        "L": []
+                    },
+                    "noteId": {
+                        "S": "123123"
+                    },
+                    "userId": {
+                        "S": "notifications"
+                    }
+                },
+                "SequenceNumber": "102649900000000021055483023",
+                "SizeBytes": 165,
+                "StreamViewType": "NEW_AND_OLD_IMAGES"
+            },
+            "eventSourceARN": "arn:aws:dynamodb:eu-west-1:077911111907:table/notes/stream/2021-06-11T05:15:10.766"
+        }
+    ]
+}

@@ -14,8 +14,9 @@
   },
   "devDependencies": {
     "aws-sdk": "^2.908.0",
-    "serverless-bundle": "4.3.1",
+    "serverless-bundle": "^4.3.1",
     "serverless-dotenv-plugin": "^2.1.1",
+    "serverless-dynamo-stream-plugin": "^0.1.5",
     "serverless-offline": "^5.3.3"
   },
   "dependencies": {

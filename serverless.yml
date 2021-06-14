@@ -8,7 +8,8 @@ plugins:
   - serverless-bundle # Package our functions with Webpack
   - serverless-offline
   - serverless-dotenv-plugin # Load .env as environment variables
-
+  - serverless-dynamo-stream-plugin # connect dynamodb stream to EXISTING table
+  
 provider:
   name: aws
   runtime: nodejs12.x
@@ -32,7 +33,11 @@ provider:
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
         - dynamodb:DescribeTable
-      Resource: "arn:aws:dynamodb:eu-west-1:*:*"
+        - dynamodb:DescribeStream
+        - dynamodb:GetRecords
+        - dynamodb:GetShardIterator
+        - dynamodb:ListStreams
+      Resource: "arn:aws:dynamodb:eu-central-1:*:*"
 
 functions:
   # Defines an HTTP API endpoint that calls the main function in create.js
@@ -59,6 +64,16 @@ functions:
     # - path: url path is /notes
     # - method: GET request
     handler: list.main
+    events:
+      - http:
+          path: notes
+          method: get
+  
+  list1:
+    # Defines an HTTP API endpoint that calls the main function in list.js
+    # - path: url path is /notes
+    # - method: GET request
+    handler: list1.main
     events:
       - http:
           path: notes
@@ -93,3 +108,66 @@ functions:
       - http:
           path: notes
           method: get
+
+  notes_event_dispatcher:
+    handler: notes_event_dispatcher.main
+    environment:
+      PARAM1: param1
+      PARAM2: param2
+      PARAM3: >
+        [
+          {
+              "id": "notifications",
+              "type": "add",
+              "path": "$.Records[*].dynamodb",
+              "handler": "add_notification_event"
+          },
+          {
+              "type": "update",
+              "path": "$.Records[*].dynamodb",
+              "handler": "update_notification_event"
+          }
+        ]
+      PARAM4: param4
+      # PARAM3:
+      #   type: add
+      #   path: $.Records[*].dynamodb
+      #   handler: add_notification_event
+      # event_handlers:
+      #   - add_comment_handler:
+      #       type: added
+      #       path: somepath
+      #       handler: somehandler
+    events:
+      - existingDynamoStream:
+          tableName: notes
+          streamType: NEW_AND_OLD_IMAGES
+          startingPosition: LATEST
+  
+  add_notification_event:
+    handler: add_notification_event.main
+
+  # notes_event_handler:
+  #   handler: notes_event_handler.main
+  #   events:
+  #     - existingDynamoStream:
+  #         tableName: notes
+  #         streamType: NEW_AND_OLD_IMAGES
+  #         startingPosition: LATEST
+# resources:
+#   Resources:
+#     NotesTable:
+#       Type: AWS::DynamoDB::Table
+#       Properties:
+#         TableName: notes1
+#         AttributeDefinitions:
+#           - AttributeName: userId
+#             AttributeType: S
+#         KeySchema:
+#           - AttributeName: userId
+#             KeyType: HASH
+#         ProvisionedThroughput:
+#           ReadCapacityUnits: 5
+#           WriteCapacityUnits: 5
+#         StreamSpecification:
+#           StreamViewType: NEW_AND_OLD_IMAGES          

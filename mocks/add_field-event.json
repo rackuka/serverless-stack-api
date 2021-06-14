@@ -1,8 +1,8 @@
 {
   "body" : {
     "fieldParameters" : {
-      "fieldName" : "anotherField",
-      "fieldValue" : "anotherFieldValue"
+      "fieldName" : "toggleValues",
+      "fieldValue" : false
     },
     "filter" : {
       "fieldName" : "attachment",
